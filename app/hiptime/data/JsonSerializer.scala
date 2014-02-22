@@ -12,6 +12,6 @@ object JsonSerializer {
     }
     Json.obj(
       "type" -> "users",
-      "value" -> Json.arr(values))
+      "value" -> values)
   }
 }
