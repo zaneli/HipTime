@@ -4,6 +4,11 @@ wsEndpoint = (path) ->
   "#{protocol}//#{loc.host}#{path}"
 
 doConnect = (apiKey) ->
+  reconnect = ->
+    setTimeout ->
+      doConnect(apiKey)
+    , 3000
+
   connection = new WebSocket(wsEndpoint("/api/status"), ['soap'])
 
   sendJson = (obj) ->
@@ -14,6 +19,9 @@ doConnect = (apiKey) ->
 
   connection.onerror = (error) ->
     console.log(error)
+
+  connection.onclose = (event) ->
+    reconnect()
 
   connection.onmessage = (message) ->
     data = JSON.parse(message.data)
