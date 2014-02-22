@@ -21,6 +21,7 @@ doConnect = (apiKey) ->
       when "users" then displayUsers(data.value)
       when "ping" then sendJson(type: "pong")
       else console.log("Unknown message", message)
+    updateLastUpdated()
 
 gravatarUrl = (email) ->
   "http://www.gravatar.com/avatar/#{$.md5(email)}"
@@ -44,7 +45,8 @@ displayUsers = (users) ->
   populateLi($(".active-users-list"), activeUsers)
   populateLi($(".inactive-users-list"), inactiveUsers)
 
-
+updateLastUpdated = ->
+  $("#last-updated").text(new Date())
 
 $ ->
   alertDiv = $(".alert")
