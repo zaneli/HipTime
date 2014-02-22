@@ -12,7 +12,7 @@ class HipChatApiActor extends Actor {
     case _ => {
       LiveChannels.channels.map {
         case (key, chs) =>
-          val jsonUsers = JsonSerializer.usersToJson(users(key))
+          val jsonUsers = JsonSerializer.usersToJson(hiptime.utils.HipchatFetcher.users(key).toList)
           chs.map {
             ChannelMessage(_, jsonUsers)
           }
@@ -22,5 +22,5 @@ class HipChatApiActor extends Actor {
     }
   }
 
-  def users(apiKey: String): Seq[User] = ???
+//  def users(apiKey: String): Seq[User] = ???
 }
