@@ -1,16 +1,22 @@
 package hiptime.controllers
 
 import play.api.mvc.{Action, Controller}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.WebSocket
+import play.api.libs.iteratee.{Concurrent, Enumerator, Iteratee}
+import scala.concurrent.ExecutionContext
 
 
 object StatusController extends Controller {
+  import ExecutionContext.Implicits.global
 
   def index = Action {
     Ok(views.html.index())
   }
 
-  def status = Action {
+  def status = WebSocket.using[String] { request =>
+
+
     val response = Json.obj(
       "type" -> "users",
       "value" -> Json.arr(
@@ -19,6 +25,14 @@ object StatusController extends Controller {
         Json.obj("name" -> "piyo", "email" -> "piyo@example.com", "active" -> false)
       )
     )
-    Ok(response)
+
+    val (out, ch) = Concurrent.broadcast[String]
+
+    val in = Iteratee.foreach[String] {
+      msg =>
+        ch.push(response.toString)
+    }
+
+    (in, out)
   }
 }
