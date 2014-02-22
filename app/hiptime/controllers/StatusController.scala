@@ -9,6 +9,7 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.JsString
 import hiptime.actors.ActorUtil
 import play.api.libs.concurrent.Execution.Implicits._
+import play.api.Play.current
 
 object StatusController extends Controller {
 
@@ -35,7 +36,7 @@ object StatusController extends Controller {
           (msg \ "type").as[String] match {
             case "api_key" => {
               val apiKey = msg \ "value"
-              ActorUtil.create(play.api.Play.current, ch, apiKey.as[String])
+              ActorUtil.create(ch, apiKey.as[String])
             }
           }
         }
