@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                           hiptime.controllers.StatusController.index
 GET     /api/status                 hiptime.controllers.StatusController.status
 
 # Map static resources from the /public folder to the /assets URL path

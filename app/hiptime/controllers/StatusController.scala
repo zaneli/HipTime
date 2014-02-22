@@ -6,6 +6,10 @@ import play.api.libs.json.Json
 
 object StatusController extends Controller {
 
+  def index = Action {
+    Ok(views.html.index())
+  }
+
   def status = Action {
     val response = Json.obj(
       "type" -> "users",
