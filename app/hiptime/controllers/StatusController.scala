@@ -5,16 +5,18 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.WebSocket
 import play.api.libs.iteratee.{Concurrent, Enumerator, Iteratee}
 import scala.concurrent.ExecutionContext
-
+import play.api.libs.json.JsValue
+import play.api.libs.json.JsString
+import hiptime.actors.ActorUtil
+import play.api.libs.concurrent.Execution.Implicits._
 
 object StatusController extends Controller {
-  import ExecutionContext.Implicits.global
 
   def index = Action {
     Ok(views.html.index())
   }
 
-  def status = WebSocket.using[String] { request =>
+  def status = WebSocket.using[JsValue] { request =>
 
 
     val response = Json.obj(
@@ -25,12 +27,19 @@ object StatusController extends Controller {
         Json.obj("name" -> "piyo", "email" -> "piyo@example.com", "active" -> false)
       )
     )
+    val (out, ch) = Concurrent.broadcast[JsValue]
 
-    val (out, ch) = Concurrent.broadcast[String]
-
-    val in = Iteratee.foreach[String] {
+    val in = Iteratee.foreach[JsValue] {
       msg =>
-        ch.push(response.toString)
+        {
+          (msg \ "type").as[String] match {
+            case "api_key" => {
+              val apiKey = msg \ "value"
+              ActorUtil.create(play.api.Play.current, ch, apiKey.as[String])
+            }
+          }
+        }
+//        ch.push(response.toString)
     }
 
     (in, out)
