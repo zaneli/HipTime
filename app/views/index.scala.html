@@ -3,11 +3,14 @@
 <html>
   
   <head>
-    <title>New Page</title>
+    <title>HipTime</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootswatch/3.0.0/flatly/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.md5.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("main.js")"></script>
   </head>
   
   <body>
@@ -18,21 +21,53 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
             </button>
-            <a href="#" class="navbar-brand">HipTime</a>
+            <a href="/" class="navbar-brand">HipTime</a>
           </div>
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav"></ul>
           </div>
         </div>
       </div>
-      <div class="jumbotron">
+
+      <div class="alert alert-warning" style="display: none;">
+        <strong>Warning!</strong>
+        <span id="warning-message"></span>
+      </div>
+
+      <div class="jumbotron" id="start-pane">
         <h1>Time card using HipChat</h1>
         <p>Show current working status, and files.</p>
+
         <form class="form-inline">
-          <input type="text" class="form-control" placeholder="API key (read permission is required)">
-          <a class="btn btn-primary btn-block">Go</a>
+          <input type="text" class="form-control api-key" placeholder="API key (read permission is required)">
+          <a class="btn btn-primary btn-block start-btn">Go</a>
         </form>
       </div>
+
+      <div id="user-status" style="display:none;">
+        <div class="panel panel-success">
+          <div class="panel-heading">Active users
+          </div>
+          <ul class="list-group active-users-list">
+            <li class="list-group-item">
+              <img src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg">Sam William</li>
+            <li class="list-group-item">
+              <img src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg">Sam William</li>
+            <li class="list-group-item">
+              <img src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg">Sam William</li>
+          </ul>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Inactive users
+          </div>
+          <ul class="list-group inactive-users-list">
+            <li class="list-group-item">
+              <img src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg">Sam William</li>
+          </ul>
+        </div>
+      </div>
+
+
     </div>
   </body>
 
